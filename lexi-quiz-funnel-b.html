@@ -465,15 +465,20 @@
     }, 200);
   }
 
-  function submitB() {
+  async function submitB() {
     const em = document.getElementById('email-b').value.trim();
     if (!em || !em.includes('@')) {
       document.getElementById('email-b').style.borderColor = '#C8B89A';
       document.getElementById('email-b').focus();
       return;
     }
-    // KIT FORM INTEGRATION POINT
-    console.log('Funnel B email:', em, 'Result:', calc());
+    try {
+      await fetch('https://app.kit.com/forms/46fbd192aa/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email_address: em })
+      });
+    } catch(e) { console.log('Kit:', e); }
     goTo('s-thanks');
   }
 </script>

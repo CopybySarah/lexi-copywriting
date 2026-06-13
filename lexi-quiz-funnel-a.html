@@ -585,16 +585,20 @@
     }, 200);
   }
 
-  function submitEmail() {
+  async function submitEmail() {
     const email = document.getElementById('email-input').value.trim();
     if (!email || !email.includes('@')) {
       document.getElementById('email-input').style.borderColor = '#C8B89A';
       document.getElementById('email-input').focus();
       return;
     }
-    // KIT FORM INTEGRATION POINT
-    // Hier Kit-Formular-Action eintragen: fetch('https://app.kit.com/forms/DEINE_FORM_ID/subscriptions', ...)
-    console.log('Email:', email, 'Result:', calcResult());
+    try {
+      await fetch('https://app.kit.com/forms/46fbd192aa/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email_address: email })
+      });
+    } catch(e) { console.log('Kit:', e); }
     showScreen('screen-thanks');
   }
 </script>
